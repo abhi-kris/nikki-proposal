@@ -406,6 +406,10 @@ li {
   border-color: var(--yellow);
 }
 
+#continue-to-surprise {
+  margin-top: 4px;
+}
+
 .celebration-screen {
   text-align: center;
 }

@@ -20,6 +20,12 @@ const dateButtons = document.querySelectorAll(".date-option");
 const dateResult = document.querySelector("#date-result");
 const celebrationVideo = document.querySelector("#celebration-video");
 const chosenDateMessage = document.querySelector("#chosen-date-message");
+const continueToSurpriseButton = document.querySelector(
+  "#continue-to-surprise"
+);
+const celebrationAudio = document.querySelector("#celebration-audio");
+
+let selectedDate = "";
 
 function showScreen(screenNumber) {
   screens.forEach((screen) => {
@@ -76,18 +82,31 @@ dateButtons.forEach((button) => {
 
     button.classList.add("selected");
     button.setAttribute("aria-pressed", "true");
-    dateResult.textContent = `${button.dataset.date} selected!`;
-
-    window.setTimeout(() => {
-      chosenDateMessage.textContent = `Spider-Man night: ${button.dataset.date} 🎉`;
-      showScreen(9);
-      celebrationVideo.currentTime = 0;
-      celebrationVideo.play().catch(() => {
-        // The visible controls allow playback if a browser blocks autoplay.
-      });
-      launchConfetti();
-    }, 650);
+    selectedDate = button.dataset.date;
+    dateResult.textContent = `${selectedDate} selected! Keep going, one last page.`;
+    continueToSurpriseButton.classList.remove("hidden");
   });
+});
+
+continueToSurpriseButton.addEventListener("click", () => {
+  if (!selectedDate) {
+    return;
+  }
+
+  chosenDateMessage.textContent = `Spider-Man night: ${selectedDate} 🎉`;
+  showScreen(9);
+
+  celebrationVideo.currentTime = 0;
+  celebrationVideo.play().catch(() => {
+    // The visible controls allow playback if a browser blocks autoplay.
+  });
+
+  celebrationAudio.currentTime = 0;
+  celebrationAudio.play().catch(() => {
+    // Some browsers may still require the user to adjust their sound settings.
+  });
+
+  launchConfetti();
 });
 
 counterButton.addEventListener("click", () => {
